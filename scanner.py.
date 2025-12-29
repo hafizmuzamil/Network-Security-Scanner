@@ -1,0 +1,26 @@
+import socket
+from datetime import datetime
+
+def scan_target(ip):
+    print(f"--- Scanning Target: {ip} ---")
+    print(f"--- Time started: {datetime.now()} ---")
+    
+    # Common ports to check for System Integration/Security
+    ports = {21: "FTP", 22: "SSH", 80: "HTTP", 443: "HTTPS", 3389: "RDP"}
+    
+    for port, service in ports.items():
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        socket.setdefaulttimeout(1)
+        
+        # returns an error indicator
+        result = s.connect_ex((ip, port))
+        if result == 0:
+            print(f"Port {port} ({service}): OPEN")
+        else:
+            print(f"Port {port} ({service}): CLOSED")
+        s.close()
+
+if __name__ == "__main__":
+    # You can change this to your own local IP for testing
+    target = "127.0.0.1" 
+    scan_target(target)
